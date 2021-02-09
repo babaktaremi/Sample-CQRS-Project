@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Sample.Core.MovieApplication.BackgroundWorker.Channels;
 using Sample.DAL;
 using Sample.DAL.ReadRepositories;
 using Sample.DAL.WriteRepositories;
@@ -42,7 +43,10 @@ namespace Sample.Web
             #region IOC
 
             services.AddScoped<WriteMovieRepository>();
+            
             services.AddSingleton<ReadMovieRepository>();
+
+            services.AddSingleton<ReadModelChannel>();
 
             #endregion
 

@@ -22,7 +22,7 @@ namespace Sample.DAL.ReadRepositories
 
         public Task<Movie_Read> GetMovieByName(string name)
         {
-            return base.GetSingleWitthFilter(new ExpressionFilterDefinition<Movie_Read>(read => read.Name == name));
+            return base.GetSingleWithFilter(new ExpressionFilterDefinition<Movie_Read>(read => read.Name == name));
         }
     }
 }

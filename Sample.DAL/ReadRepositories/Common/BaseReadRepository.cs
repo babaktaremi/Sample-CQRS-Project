@@ -54,7 +54,7 @@ namespace Sample.DAL.ReadRepositories.Common
             return result;
         }
 
-        public async Task<TEntity> GetSingleWitthFilter(FilterDefinition<TEntity> filter)
+        public async Task<TEntity> GetSingleWithFilter(FilterDefinition<TEntity> filter)
         {
             return await (await Collection.FindAsync(filter)).FirstOrDefaultAsync();
         }
