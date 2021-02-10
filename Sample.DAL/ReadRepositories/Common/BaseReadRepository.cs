@@ -38,7 +38,15 @@ namespace Sample.DAL.ReadRepositories.Common
 
         public async Task Create(TEntity entity)
         {
-            await Collection.InsertOneAsync(entity);
+            try
+            {
+                await Collection.InsertOneAsync(entity);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<bool> Update(TEntity entity, FilterDefinition<TEntity> filter)
@@ -64,5 +72,6 @@ namespace Sample.DAL.ReadRepositories.Common
             var result = await Collection.DeleteOneAsync(filter);
             return result.IsAcknowledged;
         }
+
     }
 }

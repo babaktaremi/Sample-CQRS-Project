@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Sample.DAL\Sample.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MovieApplication\Common\Marks\" />
-  </ItemGroup>
-
 </Project>

@@ -10,7 +10,7 @@ namespace Sample.DAL.ReadRepositories
 {
     public class ReadMovieRepository : BaseReadRepository<Movie_Read>
     {
-        public ReadMovieRepository():base("mongodb://localhost:8081","MoviesDatabase")
+        public ReadMovieRepository():base("mongodb://localhost:27017", "moviesdatabase")
         {
             
         }

@@ -11,7 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Sample.Core.Common.Marks;
+using Sample.Core.MovieApplication.BackgroundWorker;
 using Sample.Core.MovieApplication.BackgroundWorker.Channels;
 using Sample.DAL;
 using Sample.DAL.ReadRepositories;
@@ -50,8 +53,12 @@ namespace Sample.Web
 
             #endregion
 
+            services.AddMediatR(typeof(ICommitable).Assembly);
+
+            services.AddHostedService<AddReadModelWorker>();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sample.Web", Version = "v1" });
