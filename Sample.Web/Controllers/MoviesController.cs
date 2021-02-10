@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.MovieApplication.Commands;
+using Sample.Core.MovieApplication.Queries.GetMovieByName;
 
 namespace Sample.Web.Controllers
 {
@@ -32,6 +33,14 @@ namespace Sample.Web.Controllers
                 return Ok();
 
             return BadRequest();
+        }
+
+        [HttpGet("GetMovieByName")]
+        public async Task<IActionResult> GetMovieByName(string movieName)
+        {
+            var query = await _mediator.Send(new GetMovieByNameQuery {MovieName = movieName});
+
+            return Ok(query);
         }
     }
 }
