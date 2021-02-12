@@ -15,7 +15,7 @@ namespace Sample.DAL.WriteRepositories
            _db = db;
        }
 
-       public void AddMovie(Movie_Write movie)
+       public void AddMovie(Movie movie)
        {
            _db.Movies.Add(movie);
        }

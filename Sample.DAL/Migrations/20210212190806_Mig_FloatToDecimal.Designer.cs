@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sample.DAL;
 
 namespace Sample.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210212190806_Mig_FloatToDecimal")]
+    partial class Mig_FloatToDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Sample.DAL.Model.WriteModels.Director", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Directors");
-                });
 
             modelBuilder.Entity("Sample.DAL.Model.WriteModels.Movie", b =>
                 {
@@ -43,9 +30,6 @@ namespace Sample.DAL.Migrations
 
                     b.Property<decimal>("BoxOffice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("DirectorId")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("ImdbRate")
                         .HasColumnType("decimal(18,2)");
@@ -58,25 +42,7 @@ namespace Sample.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DirectorId");
-
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("Sample.DAL.Model.WriteModels.Movie", b =>
-                {
-                    b.HasOne("Sample.DAL.Model.WriteModels.Director", "Director")
-                        .WithMany("Movies")
-                        .HasForeignKey("DirectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Director");
-                });
-
-            modelBuilder.Entity("Sample.DAL.Model.WriteModels.Director", b =>
-                {
-                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }

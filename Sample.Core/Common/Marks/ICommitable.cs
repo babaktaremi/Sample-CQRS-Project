@@ -1,7 +1,6 @@
 ﻿namespace Sample.Core.Common.Marks
 {
-   public interface ICommitable
+    public interface ICommitable
     {
-
     }
 }

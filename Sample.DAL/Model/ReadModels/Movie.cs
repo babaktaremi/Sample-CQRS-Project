@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Sample.DAL.Model.ReadModels
 {
-   public class Movie_Read
+   public class Movie
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -20,9 +20,12 @@ namespace Sample.DAL.Model.ReadModels
         public DateTime PublishYear { get; set; }
 
         [BsonElement("imdbRate")]
-        public float ImdbRate { get; set; }
+        public decimal ImdbRate { get; set; }
 
         [BsonElement("boxOffice")]
-        public float BoxOffice { get; set; }
+        public decimal BoxOffice { get; set; }
+
+        [BsonElement("director")]
+        public string Director { get; set; }
     }
 }

@@ -36,9 +36,9 @@ namespace Sample.Web.Controllers
         }
 
         [HttpGet("GetMovieByName")]
-        public async Task<IActionResult> GetMovieByName(string movieName)
+        public async Task<IActionResult> GetMovieByName([FromQuery] GetMovieByNameQuery model)
         {
-            var query = await _mediator.Send(new GetMovieByNameQuery {MovieName = movieName});
+            var query = await _mediator.Send(model);
 
             return Ok(query);
         }

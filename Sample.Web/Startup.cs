@@ -46,8 +46,10 @@ namespace Sample.Web
             #region IOC
 
             services.AddScoped<WriteMovieRepository>();
-            
-            services.AddSingleton<ReadMovieRepository>();
+            services.AddScoped<DirectorRepository>();
+
+
+            services.AddSingleton<ReadMovieRepository>(options => new ReadMovieRepository("mongodb://localhost:27017", "moviesdatabase"));
 
             services.AddSingleton<ReadModelChannel>();
 

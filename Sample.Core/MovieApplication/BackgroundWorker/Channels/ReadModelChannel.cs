@@ -10,23 +10,23 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.Channels
 {
     public class ReadModelChannel
     {
-        private Channel<Movie_Read> _serviceChannel;
+        private Channel<Movie> _serviceChannel;
 
         public ReadModelChannel()
         {
-            _serviceChannel = Channel.CreateBounded<Movie_Read>(new BoundedChannelOptions(4000)
+            _serviceChannel = Channel.CreateBounded<Movie>(new BoundedChannelOptions(4000)
             {
                 SingleReader = false,
                 SingleWriter = false
             });
         }
 
-        public async Task AddToChannelAsync(Movie_Read urgentError, CancellationToken cancellationToken)
+        public async Task AddToChannelAsync(Movie urgentError, CancellationToken cancellationToken)
         {
             await _serviceChannel.Writer.WriteAsync(urgentError, cancellationToken);
         }
 
-        public IAsyncEnumerable<Movie_Read> ReturnValue(CancellationToken cancellationToken)
+        public IAsyncEnumerable<Movie> ReturnValue(CancellationToken cancellationToken)
         {
             return _serviceChannel.Reader.ReadAllAsync(cancellationToken);
         }

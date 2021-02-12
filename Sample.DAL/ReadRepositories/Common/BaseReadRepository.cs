@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -28,49 +30,43 @@ namespace Sample.DAL.ReadRepositories.Common
             Collection = Db.GetCollection<TEntity>(tableName);
         }
 
-        public async Task<IEnumerable<TEntity>> GetCollection()
+        public async Task<IEnumerable<TEntity>> GetCollection(CancellationToken cancellationToken)
         {
-
-
-            var dataList = await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync();
+            var dataList = await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync(cancellationToken: cancellationToken);
             return dataList;
         }
 
-        public async Task Create(TEntity entity)
+        public  Task Create(TEntity entity)
         {
-            try
-            {
-                await Collection.InsertOneAsync(entity);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return Collection.InsertOneAsync(entity);
         }
 
-        public async Task<bool> Update(TEntity entity, FilterDefinition<TEntity> filter)
+        public async Task Update(TEntity entity, Expression<Func<TEntity,bool>> filter, CancellationToken cancellationToken)
         {
-            var result = await Collection.ReplaceOneAsync(filter, entity);
+            var result = await Collection.ReplaceOneAsync(new ExpressionFilterDefinition<TEntity>(filter), entity, cancellationToken: cancellationToken);
 
-            return result.IsAcknowledged;
+            if(!result.IsAcknowledged)
+                throw new Exception($"Could Not update the entity {entity.GetType().Name}");
         }
 
-        public async Task<List<TEntity>> GetWithFilter(FilterDefinition<TEntity> filter)
+        public Task<List<TEntity>> GetWithFilter(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
-            var result = await Collection.Find(filter).ToListAsync();
-            return result;
+           return Collection.Find(filter).ToListAsync(cancellationToken: cancellationToken);
+           
         }
 
-        public async Task<TEntity> GetSingleWithFilter(FilterDefinition<TEntity> filter)
+        public async Task<TEntity> GetSingleWithFilter(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
-            return await (await Collection.FindAsync(filter)).FirstOrDefaultAsync();
+            return await (await Collection.FindAsync(new ExpressionFilterDefinition<TEntity>(filter), cancellationToken: cancellationToken)).FirstOrDefaultAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<bool> Delete(FilterDefinition<TEntity> filter)
+        public async Task Delete(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
-            var result = await Collection.DeleteOneAsync(filter);
-            return result.IsAcknowledged;
+            var result = await Collection.DeleteOneAsync(new ExpressionFilterDefinition<TEntity>(filter), cancellationToken);
+          
+            if(!result.IsAcknowledged)
+                throw new Exception($"Could Not Delete The Entity {typeof(TEntity).Name}");
+
         }
 
     }

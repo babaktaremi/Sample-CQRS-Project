@@ -16,9 +16,12 @@ namespace Sample.Core.MovieApplication.Commands
         public DateTime PublishYear { get; set; }
 
         [Required]
-        public float ImdbRate { get; set; }
+        public decimal ImdbRate { get; set; }
 
         [Required]
-        public float BoxOffice { get; set; }
+        public decimal BoxOffice { get; set; }
+
+        [Required]
+        public string Director { get; set; }
     }
 }

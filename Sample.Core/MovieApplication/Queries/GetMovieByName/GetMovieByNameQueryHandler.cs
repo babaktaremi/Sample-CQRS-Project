@@ -9,7 +9,7 @@ using Sample.DAL.ReadRepositories;
 
 namespace Sample.Core.MovieApplication.Queries.GetMovieByName
 {
-   public class GetMovieByNameQueryHandler:IRequestHandler<GetMovieByNameQuery,Movie_Read>
+   public class GetMovieByNameQueryHandler:IRequestHandler<GetMovieByNameQuery,Movie>
    {
        private readonly ReadMovieRepository _readMovieRepository;
 
@@ -18,9 +18,9 @@ namespace Sample.Core.MovieApplication.Queries.GetMovieByName
            _readMovieRepository = readMovieRepository;
        }
 
-        public Task<Movie_Read> Handle(GetMovieByNameQuery request, CancellationToken cancellationToken)
+        public Task<Movie> Handle(GetMovieByNameQuery request, CancellationToken cancellationToken)
         {
-            return _readMovieRepository.GetMovieByName(request.MovieName);
+            return _readMovieRepository.GetMovieByName(request.MovieName,cancellationToken);
         }
     }
 }
