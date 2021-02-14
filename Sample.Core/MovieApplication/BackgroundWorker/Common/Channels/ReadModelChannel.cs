@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Sample.DAL.Model.ReadModels;
 
-namespace Sample.Core.MovieApplication.BackgroundWorker.Channels
+namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
 {
     public class ReadModelChannel
     {
@@ -21,9 +19,9 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.Channels
             });
         }
 
-        public async Task AddToChannelAsync(Movie urgentError, CancellationToken cancellationToken)
+        public async Task AddToChannelAsync(Movie movie, CancellationToken cancellationToken)
         {
-            await _serviceChannel.Writer.WriteAsync(urgentError, cancellationToken);
+            await _serviceChannel.Writer.WriteAsync(movie, cancellationToken);
         }
 
         public IAsyncEnumerable<Movie> ReturnValue(CancellationToken cancellationToken)

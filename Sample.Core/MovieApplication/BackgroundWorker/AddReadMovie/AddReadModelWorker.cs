@@ -1,15 +1,12 @@
-﻿using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Sample.Core.MovieApplication.BackgroundWorker.Channels;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.DAL.ReadRepositories;
 
-namespace Sample.Core.MovieApplication.BackgroundWorker
+namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 {
   public class AddReadModelWorker:BackgroundService
   {

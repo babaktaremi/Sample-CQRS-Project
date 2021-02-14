@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Sample.Core.MovieApplication.Notifications
+namespace Sample.Core.MovieApplication.Notifications.AddReadMovieNotification
 {
    public class AddReadModelNotification:INotification
     {

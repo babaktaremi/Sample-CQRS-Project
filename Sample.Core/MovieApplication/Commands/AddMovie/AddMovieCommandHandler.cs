@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.MovieApplication.Notifications;
+using Sample.Core.MovieApplication.Notifications.AddReadMovieNotification;
 using Sample.DAL.Model.WriteModels;
 using Sample.DAL.WriteRepositories;
 

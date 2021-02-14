@@ -25,5 +25,15 @@ namespace Sample.DAL.ReadRepositories
         {
             return base.GetSingleWithFilter(movie =>movie.Name==name,cancellationToken );
         }
+
+        public Task DeleteMovieById(int movieId,CancellationToken cancellationToken)
+        {
+            return base.Delete(m => m.MovieId == movieId,cancellationToken);
+        }
+
+        public Task<Movie> GetMovieById(int movieId,CancellationToken cancellationToken)
+        {
+            return base.GetSingleWithFilter(movie => movie.MovieId == movieId,cancellationToken);
+        }
     }
 }

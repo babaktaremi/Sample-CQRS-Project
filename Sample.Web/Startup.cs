@@ -15,7 +15,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Sample.Core.Common.Marks;
 using Sample.Core.MovieApplication.BackgroundWorker;
-using Sample.Core.MovieApplication.BackgroundWorker.Channels;
+using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
+using Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie;
 using Sample.DAL;
 using Sample.DAL.ReadRepositories;
 using Sample.DAL.WriteRepositories;
@@ -52,12 +54,15 @@ namespace Sample.Web
             services.AddSingleton<ReadMovieRepository>(options => new ReadMovieRepository("mongodb://localhost:27017", "moviesdatabase"));
 
             services.AddSingleton<ReadModelChannel>();
+            services.AddSingleton<DeleteModelChannel>();
 
             #endregion
 
             services.AddMediatR(typeof(ICommitable).Assembly);
 
             services.AddHostedService<AddReadModelWorker>();
+            services.AddHostedService<DeleteReadMovieWorker>();
+
 
             services.AddControllers();
 

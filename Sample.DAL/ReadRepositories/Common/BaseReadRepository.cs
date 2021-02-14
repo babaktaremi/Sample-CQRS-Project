@@ -69,5 +69,6 @@ namespace Sample.DAL.ReadRepositories.Common
 
         }
 
+
     }
 }

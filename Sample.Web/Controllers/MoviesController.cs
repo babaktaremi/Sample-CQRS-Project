@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.MovieApplication.Commands;
 using Sample.Core.MovieApplication.Commands.AddMovie;
+using Sample.Core.MovieApplication.Commands.DeleteMovie;
 using Sample.Core.MovieApplication.Queries.GetMovieByName;
 
 namespace Sample.Web.Controllers
@@ -42,6 +43,17 @@ namespace Sample.Web.Controllers
             var query = await _mediator.Send(model);
 
             return Ok(query);
+        }
+
+        [HttpPost("DeleteMovie")]
+        public async Task<IActionResult> DeleteMovie(DeleteMovieCommand model)
+        {
+            var result = await _mediator.Send(model);
+
+            if (result)
+                return Ok();
+
+            return BadRequest();
         }
     }
 }
