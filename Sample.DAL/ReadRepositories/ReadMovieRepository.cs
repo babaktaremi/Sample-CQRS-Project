@@ -12,9 +12,9 @@ namespace Sample.DAL.ReadRepositories
         {
         }
 
-        public async Task AddMovieAsync(Movie movie, CancellationToken cancellationToken = default)
+        public Task AddMovieAsync(Movie movie, CancellationToken cancellationToken = default)
         {
-            await base.CreateAsync(movie, cancellationToken);
+            return base.CreateAsync(movie, cancellationToken);
         }
 
         public Task<Movie> GetMovieByNameAsync(string name, CancellationToken cancellationToken = default)

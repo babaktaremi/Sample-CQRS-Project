@@ -38,7 +38,7 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
                 Director = director
             };
 
-            _movieRepository.AddMovie(movie);
+            await _movieRepository.AddMovieAsync(movie);
 
             return new AddMovieCommandResult { MovieId = movie.Id };
         }

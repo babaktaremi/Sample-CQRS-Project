@@ -14,7 +14,7 @@ namespace Sample.DAL.WriteRepositories
             _db = db;
         }
 
-        public async Task AddMovie(Movie movie, CancellationToken cancellationToken = default)
+        public async Task AddMovieAsync(Movie movie, CancellationToken cancellationToken = default)
         {
             await _db.Movies.AddAsync(movie, cancellationToken);
         }

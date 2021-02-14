@@ -14,9 +14,9 @@ namespace Sample.Core.MovieApplication.Notifications.AddReadMovieNotification
             _readModelChannel = readModelChannel;
         }
 
-        public async Task Handle(AddReadModelNotification notification, CancellationToken cancellationToken)
+        public Task Handle(AddReadModelNotification notification, CancellationToken cancellationToken)
         {
-            await _readModelChannel.AddToChannelAsync(notification.MovieId, cancellationToken);
+            return _readModelChannel.AddToChannelAsync(notification.MovieId, cancellationToken);
         }
     }
 }
