@@ -16,9 +16,6 @@ namespace Sample.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Movie>().Property(c => c.Id).UseHiLo();
-            modelBuilder.Entity<Director>().Property(c => c.Id).UseHiLo();
-
             base.OnModelCreating(modelBuilder);
         }
 
