@@ -6,7 +6,7 @@ namespace Sample.Web
 {
     public class Program
     {
-        public Task Main(string[] args)
+        public static Task Main(string[] args)
         {
             return CreateHostBuilder(args).Build().RunAsync();
         }

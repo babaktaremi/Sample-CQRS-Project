@@ -44,9 +44,16 @@ namespace Sample.Web
             services.AddSingleton<ReadModelChannel>();
             services.AddSingleton<DeleteModelChannel>();
 
+
+            #region Mongo Singleton Injection
+
             var mongoClient = new MongoClient("mongodb://localhost:27017");
             var mongoDatabase = mongoClient.GetDatabase("moviesdatabase");
             services.AddSingleton(mongoDatabase);
+
+            #endregion
+
+
             services.AddScoped<ReadMovieRepository>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));

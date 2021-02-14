@@ -13,19 +13,17 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 {
     public class AddReadModelWorker : BackgroundService
     {
-        private readonly ReadMovieRepository _readMovieRepository;
+      
         private readonly ReadModelChannel _readModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public AddReadModelWorker(ReadMovieRepository readMovieRepository, ReadModelChannel readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
+        public AddReadModelWorker(ReadModelChannel readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
-            _readMovieRepository = readMovieRepository;
             _readModelChannel = readModelChannel;
             _logger = logger;
             _serviceProvider = serviceProvider;
         }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -33,7 +31,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
                 using var scope = _serviceProvider.CreateScope();
 
                 var writeRepository = scope.ServiceProvider.GetRequiredService<WriteMovieRepository>();
-
+                var readMovieRepository = scope.ServiceProvider.GetRequiredService<ReadMovieRepository>();
                 try
                 {
                     await foreach (var item in _readModelChannel.ReadAsync(stoppingToken))
@@ -42,7 +40,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 
                         if (movie != null)
                         {
-                            await _readMovieRepository.AddAsync(new Movie
+                            await readMovieRepository.AddAsync(new Movie
                             {
                                 MovieId = movie.Id,
                                 Director = movie.Director.FullName,

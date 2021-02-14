@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
@@ -11,15 +12,17 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
 {
     public class DeleteReadMovieWorker : BackgroundService
     {
-        private readonly ReadMovieRepository _readMovieRepository;
+       
         private readonly DeleteModelChannel _deleteModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
-        public DeleteReadMovieWorker(ReadMovieRepository readMovieRepository, DeleteModelChannel deleteModelChannel, ILogger<AddReadModelWorker> logger)
+
+        public DeleteReadMovieWorker(DeleteModelChannel deleteModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
-            _readMovieRepository = readMovieRepository;
             _deleteModelChannel = deleteModelChannel;
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -28,9 +31,14 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
             {
                 try
                 {
+                    using var scope =  _serviceProvider.CreateScope();
+
+                    var readMovieRepository = scope.ServiceProvider.GetRequiredService<ReadMovieRepository>();
+
+
                     await foreach (var item in _deleteModelChannel.ReadAsync(stoppingToken))
                     {
-                        await _readMovieRepository.DeleteByMovieIdAsync(item, stoppingToken);
+                        await readMovieRepository.DeleteByMovieIdAsync(item, stoppingToken);
                     }
                 }
                 catch (Exception e)
