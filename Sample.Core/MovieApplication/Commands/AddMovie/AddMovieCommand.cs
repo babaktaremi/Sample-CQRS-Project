@@ -1,15 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using MediatR;
-using Sample.Core.Common.Marks;
 
 namespace Sample.Core.MovieApplication.Commands.AddMovie
 {
-   public class AddMovieCommand:IRequest<AddMovieCommandResult>
+    public class AddMovieCommand : IRequest<AddMovieCommandResult>
     {
         [Required]
         public string Name { get; set; }
-       
+
         [Required]
         public DateTime PublishYear { get; set; }
 

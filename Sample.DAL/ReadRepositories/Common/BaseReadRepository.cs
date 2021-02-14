@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace Sample.DAL.ReadRepositories.Common
@@ -20,8 +15,7 @@ namespace Sample.DAL.ReadRepositories.Common
 
         public IMongoCollection<TEntity> Collection { get; }
 
-        
-        public BaseReadRepository(string connectionString,string database)
+        public BaseReadRepository(string connectionString, string database)
         {
             MongoClient = new MongoClient(connectionString);
             Db = MongoClient.GetDatabase(database);
@@ -36,23 +30,22 @@ namespace Sample.DAL.ReadRepositories.Common
             return dataList;
         }
 
-        public  Task Create(TEntity entity)
+        public Task Create(TEntity entity)
         {
             return Collection.InsertOneAsync(entity);
         }
 
-        public async Task Update(TEntity entity, Expression<Func<TEntity,bool>> filter, CancellationToken cancellationToken)
+        public async Task Update(TEntity entity, Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
             var result = await Collection.ReplaceOneAsync(new ExpressionFilterDefinition<TEntity>(filter), entity, cancellationToken: cancellationToken);
 
-            if(!result.IsAcknowledged)
+            if (!result.IsAcknowledged)
                 throw new Exception($"Could Not update the entity {entity.GetType().Name}");
         }
 
         public Task<List<TEntity>> GetWithFilter(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
-           return Collection.Find(filter).ToListAsync(cancellationToken: cancellationToken);
-           
+            return Collection.Find(filter).ToListAsync(cancellationToken: cancellationToken);
         }
 
         public async Task<TEntity> GetSingleWithFilter(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
@@ -63,12 +56,9 @@ namespace Sample.DAL.ReadRepositories.Common
         public async Task Delete(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
         {
             var result = await Collection.DeleteOneAsync(new ExpressionFilterDefinition<TEntity>(filter), cancellationToken);
-          
-            if(!result.IsAcknowledged)
+
+            if (!result.IsAcknowledged)
                 throw new Exception($"Could Not Delete The Entity {typeof(TEntity).Name}");
-
         }
-
-
     }
 }

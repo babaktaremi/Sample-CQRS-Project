@@ -9,11 +9,8 @@ namespace Sample.DAL.Model.WriteModels
         public DateTime PublishYear { get; set; }
         public decimal ImdbRate { get; set; }
         public decimal BoxOffice { get; set; }
-        
-        #region
-
         public int DirectorId { get; set; }
+
         public Director Director { get; set; }
-        #endregion
     }
 }

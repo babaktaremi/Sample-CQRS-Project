@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Sample.Core.MovieApplication.Notifications;
-using Sample.Core.MovieApplication.Notifications.AddReadMovieNotification;
 using Sample.DAL.Model.WriteModels;
 using Sample.DAL.WriteRepositories;
 
@@ -14,7 +12,6 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
         private readonly WriteMovieRepository _movieRepository;
         private readonly DirectorRepository _directorRepository;
 
-
         public AddMovieCommandHandler(IMediator mediator, WriteMovieRepository movieRepository, DirectorRepository directorRepository)
         {
             _mediator = mediator;
@@ -24,7 +21,7 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
 
         public async Task<AddMovieCommandResult> Handle(AddMovieCommand request, CancellationToken cancellationToken)
         {
-            var director = await _directorRepository.GetDirector(request.Director,cancellationToken);
+            var director = await _directorRepository.GetDirector(request.Director, cancellationToken);
 
             if (director is null)
             {
@@ -43,8 +40,7 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
 
             _movieRepository.AddMovie(movie);
 
-
-            return new AddMovieCommandResult{MovieId = movie.Id};
+            return new AddMovieCommandResult { MovieId = movie.Id };
         }
     }
 }

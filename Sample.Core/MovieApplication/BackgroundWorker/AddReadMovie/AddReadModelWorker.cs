@@ -42,7 +42,6 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 
                         if (movie != null)
                         {
-
                             await _readMovieRepository.AddMovie(new Movie
                             {
                                 MovieId = movie.Id,

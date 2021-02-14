@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Sample.DAL.Model;
+﻿using Microsoft.EntityFrameworkCore;
 using Sample.DAL.Model.WriteModels;
 
 namespace Sample.DAL

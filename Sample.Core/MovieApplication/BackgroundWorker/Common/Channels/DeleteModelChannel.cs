@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Sample.DAL.Model.ReadModels;
 
 namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
 {
-   public class DeleteModelChannel
+    public class DeleteModelChannel
     {
         private Channel<int> _serviceChannel;
 
@@ -30,6 +27,5 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
         {
             return _serviceChannel.Reader.ReadAllAsync(cancellationToken);
         }
-
     }
 }

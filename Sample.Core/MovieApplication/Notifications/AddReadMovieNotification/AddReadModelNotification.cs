@@ -1,9 +1,8 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 
 namespace Sample.Core.MovieApplication.Notifications.AddReadMovieNotification
 {
-   public class AddReadModelNotification:INotification
+    public class AddReadModelNotification : INotification
     {
         public int MovieId { get; }
 
@@ -11,6 +10,5 @@ namespace Sample.Core.MovieApplication.Notifications.AddReadMovieNotification
         {
             MovieId = movieId;
         }
-
     }
 }

@@ -17,7 +17,6 @@ namespace Sample.Core.Common.Pipelines
 
         public async Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
         {
-
             if (request is ICommitable)
             {
                 if (response is null)
@@ -25,7 +24,6 @@ namespace Sample.Core.Common.Pipelines
 
                 await _db.SaveChangesAsync(cancellationToken);
             }
-
         }
     }
 }

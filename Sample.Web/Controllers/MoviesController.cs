@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
-using Sample.Core.MovieApplication.Commands;
 using Sample.Core.MovieApplication.Commands.AddMovie;
 using Sample.Core.MovieApplication.Commands.DeleteMovie;
 using Sample.Core.MovieApplication.Queries.GetMovieByName;
@@ -22,7 +18,6 @@ namespace Sample.Web.Controllers
             _mediator = mediator;
         }
 
-
         [HttpPost("AddMovie")]
         public async Task<IActionResult> AddMovie(AddMovieCommand model)
         {
@@ -30,7 +25,6 @@ namespace Sample.Web.Controllers
                 return BadRequest(ModelState);
 
             var command = await _mediator.Send(model);
-
 
             return Ok(command.MovieId);
         }
