@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Sample.DAL.Model.WriteModels
 {
-   public class Director
+    public class Director
     {
         public int Id { get; set; }
         public string FullName { get; set; }

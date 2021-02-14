@@ -2,22 +2,21 @@
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
-using Sample.DAL.Model.ReadModels;
 
 namespace Sample.Core.MovieApplication.Notifications.AddReadMovieNotification
 {
-   public class AddReadModelNotificationHandler:INotificationHandler<AddReadModelNotification>
-   {
-       private readonly ReadModelChannel _readModelChannel;
+    public class AddReadModelNotificationHandler : INotificationHandler<AddReadModelNotification>
+    {
+        private readonly ReadModelChannel _readModelChannel;
 
-       public AddReadModelNotificationHandler(ReadModelChannel readModelChannel)
-       {
-           _readModelChannel = readModelChannel;
-       }
-
-        public async Task Handle(AddReadModelNotification notification, CancellationToken cancellationToken)
+        public AddReadModelNotificationHandler(ReadModelChannel readModelChannel)
         {
-            await _readModelChannel.AddToChannelAsync(notification.MovieId, cancellationToken);
+            _readModelChannel = readModelChannel;
+        }
+
+        public Task Handle(AddReadModelNotification notification, CancellationToken cancellationToken)
+        {
+            return _readModelChannel.AddAsync(notification.MovieId, cancellationToken);
         }
     }
 }

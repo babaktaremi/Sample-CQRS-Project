@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Sample.DAL.Model.ReadModels;
 
 namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
 {
-   public class DeleteModelChannel
+    public class DeleteModelChannel
     {
-        private Channel<int> _serviceChannel;
+        private readonly Channel<int> _serviceChannel;
 
         public DeleteModelChannel()
         {
@@ -21,15 +18,14 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
             });
         }
 
-        public async Task AddToChannelAsync(int movieId, CancellationToken cancellationToken)
+        public async Task AddAsync(int movieId, CancellationToken cancellationToken = default)
         {
             await _serviceChannel.Writer.WriteAsync(movieId, cancellationToken);
         }
 
-        public IAsyncEnumerable<int> ReturnValue(CancellationToken cancellationToken)
+        public IAsyncEnumerable<int> ReadAsync(CancellationToken cancellationToken = default)
         {
             return _serviceChannel.Reader.ReadAllAsync(cancellationToken);
         }
-
     }
 }

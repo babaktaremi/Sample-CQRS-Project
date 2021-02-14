@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -11,7 +9,7 @@ using Sample.DAL.ReadRepositories;
 
 namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
 {
-   public class DeleteReadMovieWorker:BackgroundService
+    public class DeleteReadMovieWorker : BackgroundService
     {
         private readonly ReadMovieRepository _readMovieRepository;
         private readonly DeleteModelChannel _deleteModelChannel;
@@ -24,15 +22,15 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
             _logger = logger;
         }
 
-        protected override  async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    await foreach (var item in _deleteModelChannel.ReturnValue(stoppingToken))
+                    await foreach (var item in _deleteModelChannel.ReadAsync(stoppingToken))
                     {
-                        await _readMovieRepository.DeleteMovieById(item,stoppingToken);
+                        await _readMovieRepository.DeleteByMovieIdAsync(item, stoppingToken);
                     }
                 }
                 catch (Exception e)

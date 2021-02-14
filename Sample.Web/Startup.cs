@@ -1,28 +1,20 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
-using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 using Sample.Core.Common.Marks;
 using Sample.Core.Common.Pipelines;
-using Sample.Core.MovieApplication.BackgroundWorker;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
 using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie;
 using Sample.DAL;
 using Sample.DAL.ReadRepositories;
 using Sample.DAL.WriteRepositories;
+using MongoDB.Driver;
 
 namespace Sample.Web
 {
@@ -39,35 +31,31 @@ namespace Sample.Web
         public void ConfigureServices(IServiceCollection services)
         {
             #region DbContext
-
             services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseSqlServer("Data Source=.;Initial Catalog=SampleCqrs;Integrated Security=true");
-                });
-
+            {
+                options.UseSqlServer("Data Source=.;Initial Catalog=SampleCqrs;Integrated Security=true");
+            });
             #endregion
 
             #region IOC
-
             services.AddScoped<WriteMovieRepository>();
             services.AddScoped<DirectorRepository>();
-
-
-            services.AddSingleton<ReadMovieRepository>(options => new ReadMovieRepository("mongodb://localhost:27017", "moviesdatabase"));
 
             services.AddSingleton<ReadModelChannel>();
             services.AddSingleton<DeleteModelChannel>();
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-          
+            var mongoClient = new MongoClient("mongodb://localhost:27017");
+            var mongoDatabase = mongoClient.GetDatabase("moviesdatabase");
+            services.AddSingleton(mongoDatabase);
+            services.AddScoped<ReadMovieRepository>();
 
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             #endregion
 
             services.AddMediatR(typeof(ICommitable).Assembly);
 
             services.AddHostedService<AddReadModelWorker>();
             services.AddHostedService<DeleteReadMovieWorker>();
-
 
             services.AddControllers();
 
