@@ -12,8 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 using Sample.Core.Common.Marks;
+using Sample.Core.Common.Pipelines;
 using Sample.Core.MovieApplication.BackgroundWorker;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
 using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
@@ -55,6 +57,9 @@ namespace Sample.Web
 
             services.AddSingleton<ReadModelChannel>();
             services.AddSingleton<DeleteModelChannel>();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+          
 
             #endregion
 

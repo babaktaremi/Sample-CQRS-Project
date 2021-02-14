@@ -5,7 +5,7 @@ using Sample.Core.Common.Marks;
 
 namespace Sample.Core.MovieApplication.Commands.AddMovie
 {
-   public class AddMovieCommand:IRequest<bool>,ICommitable
+   public class AddMovieCommand:IRequest<AddMovieCommandResult>
     {
         [Required]
         public string Name { get; set; }

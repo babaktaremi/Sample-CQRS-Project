@@ -24,7 +24,7 @@ namespace Sample.DAL.WriteRepositories
 
        public Task<Movie> GetMovieById(int movieId,CancellationToken cancellationToken)
        {
-           return _db.Movies.FirstOrDefaultAsync(c => c.Id == movieId, cancellationToken: cancellationToken);
+           return _db.Movies.Include(c=>c.Director).FirstOrDefaultAsync(c => c.Id == movieId, cancellationToken: cancellationToken);
        }
 
        public void DeleteMovie(Movie movie)

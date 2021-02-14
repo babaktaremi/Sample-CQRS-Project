@@ -8,7 +8,7 @@ using Sample.DAL.WriteRepositories;
 
 namespace Sample.Core.MovieApplication.Commands.AddMovie
 {
-    public class AddMovieCommandHandler : IRequestHandler<AddMovieCommand, bool>
+    public class AddMovieCommandHandler : IRequestHandler<AddMovieCommand, AddMovieCommandResult>
     {
         private readonly IMediator _mediator;
         private readonly WriteMovieRepository _movieRepository;
@@ -22,7 +22,7 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
             _directorRepository = directorRepository;
         }
 
-        public async Task<bool> Handle(AddMovieCommand request, CancellationToken cancellationToken)
+        public async Task<AddMovieCommandResult> Handle(AddMovieCommand request, CancellationToken cancellationToken)
         {
             var director = await _directorRepository.GetDirector(request.Director,cancellationToken);
 
@@ -43,12 +43,8 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
 
             _movieRepository.AddMovie(movie);
 
-            var notification = new AddReadModelNotification(request.Name, request.PublishYear, request.ImdbRate,
-                request.BoxOffice,request.Director,movie.Id);
 
-            await _mediator.Publish(notification, cancellationToken);
-
-            return true;
+            return new AddMovieCommandResult{MovieId = movie.Id};
         }
     }
 }
