@@ -17,7 +17,7 @@ namespace Sample.Core.MovieApplication.Queries.GetMovieByName
 
         public Task<Movie> Handle(GetMovieByNameQuery request, CancellationToken cancellationToken)
         {
-            return _readMovieRepository.GetMovieByName(request.MovieName, cancellationToken);
+            return _readMovieRepository.GetMovieByNameAsync(request.MovieName, cancellationToken);
         }
     }
 }

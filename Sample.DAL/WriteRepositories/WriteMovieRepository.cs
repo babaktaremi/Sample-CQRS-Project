@@ -19,7 +19,7 @@ namespace Sample.DAL.WriteRepositories
             _db.Movies.Add(movie);
         }
 
-        public Task<Movie> GetMovieById(int movieId, CancellationToken cancellationToken)
+        public Task<Movie> GetMovieByIdAsync(int movieId, CancellationToken cancellationToken)
         {
             return _db.Movies.Include(c => c.Director).FirstOrDefaultAsync(c => c.Id == movieId, cancellationToken: cancellationToken);
         }

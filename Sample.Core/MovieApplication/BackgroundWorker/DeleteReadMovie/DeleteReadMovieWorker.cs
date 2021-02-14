@@ -28,9 +28,9 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
             {
                 try
                 {
-                    await foreach (var item in _deleteModelChannel.ReturnValue(stoppingToken))
+                    await foreach (var item in _deleteModelChannel.ReturnValueAsync(stoppingToken))
                     {
-                        await _readMovieRepository.DeleteMovieById(item, stoppingToken);
+                        await _readMovieRepository.DeleteMovieByIdAsync(item, stoppingToken);
                     }
                 }
                 catch (Exception e)

@@ -21,12 +21,12 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
 
         public async Task<AddMovieCommandResult> Handle(AddMovieCommand request, CancellationToken cancellationToken)
         {
-            var director = await _directorRepository.GetDirector(request.Director, cancellationToken);
+            var director = await _directorRepository.GetDirectorAsync(request.Director, cancellationToken);
 
             if (director is null)
             {
                 director = new Director { FullName = request.Director };
-                _directorRepository.AddDirector(director);
+                await _directorRepository.AddDirectorAsync(director);
             }
 
             var movie = new Movie

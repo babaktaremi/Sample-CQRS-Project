@@ -36,13 +36,13 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 
                 try
                 {
-                    await foreach (var item in _readModelChannel.ReturnValue(stoppingToken))
+                    await foreach (var item in _readModelChannel.ReturnValueAsync(stoppingToken))
                     {
-                        var movie = await writeRepository.GetMovieById(item, stoppingToken);
+                        var movie = await writeRepository.GetMovieByIdAsync(item, stoppingToken);
 
                         if (movie != null)
                         {
-                            await _readMovieRepository.AddMovie(new Movie
+                            await _readMovieRepository.AddMovieAsync(new Movie
                             {
                                 MovieId = movie.Id,
                                 Director = movie.Director.FullName,

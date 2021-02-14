@@ -12,24 +12,24 @@ namespace Sample.DAL.ReadRepositories
         {
         }
 
-        public async Task AddMovie(Movie movie)
+        public async Task AddMovieAsync(Movie movie)
         {
-            await base.Create(movie);
+            await base.CreateAsync(movie);
         }
 
-        public Task<Movie> GetMovieByName(string name, CancellationToken cancellationToken)
+        public Task<Movie> GetMovieByNameAsync(string name, CancellationToken cancellationToken)
         {
-            return base.GetSingleWithFilter(movie => movie.Name == name, cancellationToken);
+            return base.GetSingleWithFilterAsync(movie => movie.Name == name, cancellationToken);
         }
 
-        public Task DeleteMovieById(int movieId, CancellationToken cancellationToken)
+        public Task DeleteMovieByIdAsync(int movieId, CancellationToken cancellationToken)
         {
-            return base.Delete(m => m.MovieId == movieId, cancellationToken);
+            return base.DeleteAsync(m => m.MovieId == movieId, cancellationToken);
         }
 
-        public Task<Movie> GetMovieById(int movieId, CancellationToken cancellationToken)
+        public Task<Movie> GetMovieByIdAsync(int movieId, CancellationToken cancellationToken)
         {
-            return base.GetSingleWithFilter(movie => movie.MovieId == movieId, cancellationToken);
+            return base.GetSingleWithFilterAsync(movie => movie.MovieId == movieId, cancellationToken);
         }
     }
 }

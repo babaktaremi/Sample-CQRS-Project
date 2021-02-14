@@ -23,7 +23,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
             await _serviceChannel.Writer.WriteAsync(movieId, cancellationToken);
         }
 
-        public IAsyncEnumerable<int> ReturnValue(CancellationToken cancellationToken)
+        public IAsyncEnumerable<int> ReturnValueAsync(CancellationToken cancellationToken)
         {
             return _serviceChannel.Reader.ReadAllAsync(cancellationToken);
         }

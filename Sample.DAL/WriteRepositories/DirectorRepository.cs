@@ -14,14 +14,14 @@ namespace Sample.DAL.WriteRepositories
             _db = db;
         }
 
-        public Task<Director> GetDirector(string name, CancellationToken cancellationToken)
+        public Task<Director> GetDirectorAsync(string name, CancellationToken cancellationToken)
         {
             return _db.Directors.FirstOrDefaultAsync(d => d.FullName == name, cancellationToken: cancellationToken);
         }
 
-        public void AddDirector(Director director)
+        public async Task AddDirectorAsync(Director director)
         {
-            _db.Directors.Add(director);
+            await _db.Directors.AddAsync(director);
         }
     }
 }

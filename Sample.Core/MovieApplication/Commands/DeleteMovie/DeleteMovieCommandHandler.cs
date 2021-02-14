@@ -19,7 +19,7 @@ namespace Sample.Core.MovieApplication.Commands.DeleteMovie
 
         public async Task<bool> Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
         {
-            var movie = await _writeMovieRepository.GetMovieById(request.MovieId, cancellationToken);
+            var movie = await _writeMovieRepository.GetMovieByIdAsync(request.MovieId, cancellationToken);
 
             if (movie is null)
                 return false;
