@@ -19,8 +19,7 @@ namespace Sample.Core.Common.Pipelines
         {
             try
             {
-                var response = await next();
-                return response;
+                return await next();
             }
             catch (Exception e)
             {

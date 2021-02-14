@@ -4,7 +4,6 @@ using MediatR;
 using Sample.Core.MovieApplication.Commands.AddMovie;
 using Sample.Core.MovieApplication.Commands.DeleteMovie;
 using Sample.Core.MovieApplication.Queries.GetMovieByName;
-using Microsoft.Extensions.Primitives;
 using System.Threading;
 
 namespace Sample.Web.Controllers
