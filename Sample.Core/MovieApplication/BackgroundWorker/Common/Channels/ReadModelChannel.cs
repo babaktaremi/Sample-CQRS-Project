@@ -18,12 +18,12 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.Common.Channels
             });
         }
 
-        public async Task AddToChannelAsync(int movie, CancellationToken cancellationToken)
+        public async Task AddToChannelAsync(int movie, CancellationToken cancellationToken = default)
         {
             await _serviceChannel.Writer.WriteAsync(movie, cancellationToken);
         }
 
-        public IAsyncEnumerable<int> ReturnValueAsync(CancellationToken cancellationToken)
+        public IAsyncEnumerable<int> ReturnValueAsync(CancellationToken cancellationToken = default)
         {
             return _serviceChannel.Reader.ReadAllAsync(cancellationToken);
         }

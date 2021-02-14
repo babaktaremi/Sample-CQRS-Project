@@ -50,7 +50,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
                                 PublishYear = movie.PublishYear,
                                 BoxOffice = movie.BoxOffice,
                                 ImdbRate = movie.ImdbRate
-                            });
+                            }, stoppingToken);
                         }
                     }
                 }

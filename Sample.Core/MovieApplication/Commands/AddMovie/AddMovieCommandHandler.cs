@@ -26,7 +26,7 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
             if (director is null)
             {
                 director = new Director { FullName = request.Director };
-                await _directorRepository.AddDirectorAsync(director);
+                await _directorRepository.AddDirectorAsync(director, cancellationToken);
             }
 
             var movie = new Movie

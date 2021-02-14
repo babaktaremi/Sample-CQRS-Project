@@ -24,18 +24,18 @@ namespace Sample.DAL.ReadRepositories.Common
             Collection = Db.GetCollection<TEntity>(tableName);
         }
 
-        public async Task<IEnumerable<TEntity>> GetCollectionAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<TEntity>> GetCollectionAsync(CancellationToken cancellationToken = default)
         {
-            var dataList = await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync(cancellationToken: cancellationToken);
+            var dataList = await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync(cancellationToken);
             return dataList;
         }
 
-        public Task CreateAsync(TEntity entity)
+        public Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            return Collection.InsertOneAsync(entity);
+            return Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
         }
 
-        public async Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
+        public async Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
         {
             var result = await Collection.ReplaceOneAsync(new ExpressionFilterDefinition<TEntity>(filter), entity, cancellationToken: cancellationToken);
 
@@ -43,17 +43,17 @@ namespace Sample.DAL.ReadRepositories.Common
                 throw new Exception($"Could Not update the entity {entity.GetType().Name}");
         }
 
-        public Task<List<TEntity>> GetWithFilterAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
+        public Task<List<TEntity>> GetWithFilterAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
         {
-            return Collection.Find(filter).ToListAsync(cancellationToken: cancellationToken);
+            return Collection.Find(filter).ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetSingleWithFilterAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
+        public async Task<TEntity> GetSingleWithFilterAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
         {
-            return await (await Collection.FindAsync(new ExpressionFilterDefinition<TEntity>(filter), cancellationToken: cancellationToken)).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            return await (await Collection.FindAsync(new ExpressionFilterDefinition<TEntity>(filter), cancellationToken: cancellationToken)).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
         {
             var result = await Collection.DeleteOneAsync(new ExpressionFilterDefinition<TEntity>(filter), cancellationToken);
 

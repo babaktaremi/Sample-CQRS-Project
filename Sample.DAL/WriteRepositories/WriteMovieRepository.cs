@@ -14,12 +14,12 @@ namespace Sample.DAL.WriteRepositories
             _db = db;
         }
 
-        public void AddMovie(Movie movie)
+        public async Task AddMovie(Movie movie, CancellationToken cancellationToken = default)
         {
-            _db.Movies.Add(movie);
+            await _db.Movies.AddAsync(movie, cancellationToken);
         }
 
-        public Task<Movie> GetMovieByIdAsync(int movieId, CancellationToken cancellationToken)
+        public Task<Movie> GetMovieByIdAsync(int movieId, CancellationToken cancellationToken = default)
         {
             return _db.Movies.Include(c => c.Director).FirstOrDefaultAsync(c => c.Id == movieId, cancellationToken: cancellationToken);
         }
