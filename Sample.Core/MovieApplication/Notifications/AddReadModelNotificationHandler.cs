@@ -23,7 +23,8 @@ namespace Sample.Core.MovieApplication.Notifications
                 BoxOffice = notification.BoxOffice,
                 ImdbRate = notification.ImdbRate,
                 PublishYear = notification.PublishYear,
-                Director = notification.Director
+                Director = notification.Director,
+                MovieId = notification.MovieId
             }, cancellationToken);
         }
     }

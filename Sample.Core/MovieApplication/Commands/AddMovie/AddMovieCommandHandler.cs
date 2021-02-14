@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.MovieApplication.Notifications;
 using Sample.DAL.Model.WriteModels;
 using Sample.DAL.WriteRepositories;
 
-namespace Sample.Core.MovieApplication.Commands
+namespace Sample.Core.MovieApplication.Commands.AddMovie
 {
     public class AddMovieCommandHandler : IRequestHandler<AddMovieCommand, bool>
     {
@@ -32,21 +29,21 @@ namespace Sample.Core.MovieApplication.Commands
             {
                 director = new Director { FullName = request.Director };
                 _directorRepository.AddDirector(director);
-
-                await _directorRepository.SaveChangesAsync(cancellationToken);
             }
 
-            _movieRepository.AddMovie(new Movie
+            var movie = new Movie
             {
                 PublishYear = request.PublishYear,
                 BoxOffice = request.BoxOffice,
                 ImdbRate = request.ImdbRate,
                 Name = request.Name,
-                DirectorId = director.Id
-            });
+                Director = director
+            };
+
+            _movieRepository.AddMovie(movie);
 
             var notification = new AddReadModelNotification(request.Name, request.PublishYear, request.ImdbRate,
-                request.BoxOffice,request.Director);
+                request.BoxOffice,request.Director,movie.Id);
 
             await _mediator.Publish(notification, cancellationToken);
 

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using MediatR;
 using Sample.Core.Common.Marks;
 
-namespace Sample.Core.MovieApplication.Commands
+namespace Sample.Core.MovieApplication.Commands.AddMovie
 {
    public class AddMovieCommand:IRequest<bool>,ICommitable
     {

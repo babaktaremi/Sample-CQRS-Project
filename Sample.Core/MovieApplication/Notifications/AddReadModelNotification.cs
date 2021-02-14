@@ -5,6 +5,7 @@ namespace Sample.Core.MovieApplication.Notifications
 {
    public class AddReadModelNotification:INotification
     {
+        public int MovieId { get; }
         public string MovieName { get; }
         public DateTime PublishYear { get; }
         public decimal ImdbRate { get;  }
@@ -12,13 +13,14 @@ namespace Sample.Core.MovieApplication.Notifications
         public string Director { get;  }
 
 
-        public AddReadModelNotification(string movieName, DateTime publishYear, decimal imdbRate, decimal boxOffice,string director)
+        public AddReadModelNotification(string movieName, DateTime publishYear, decimal imdbRate, decimal boxOffice,string director, int movieId)
         {
             MovieName = movieName;
             PublishYear = publishYear;
             ImdbRate = imdbRate;
             BoxOffice = boxOffice;
             Director = director;
+            MovieId = movieId;
         }
 
     }

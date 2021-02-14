@@ -26,10 +26,5 @@ namespace Sample.DAL.WriteRepositories
        {
            _db.Directors.Add(director);
        }
-
-       public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-       {
-           return _db.SaveChangesAsync(cancellationToken);
-       }
    }
 }

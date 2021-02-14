@@ -16,6 +16,9 @@ namespace Sample.DAL.Model.ReadModels
         [BsonElement("name")]
         public string Name { get; set; }
 
+        [BsonElement("movieId")]
+        public int MovieId { get; set; }
+
         [BsonElement("publishYear")]
         public DateTime PublishYear { get; set; }
 

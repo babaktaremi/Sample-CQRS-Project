@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.MovieApplication.Commands;
+using Sample.Core.MovieApplication.Commands.AddMovie;
 using Sample.Core.MovieApplication.Queries.GetMovieByName;
 
 namespace Sample.Web.Controllers

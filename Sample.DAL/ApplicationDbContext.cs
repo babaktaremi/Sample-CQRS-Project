@@ -14,6 +14,14 @@ namespace Sample.DAL
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Movie>().Property(c => c.Id).UseHiLo();
+            modelBuilder.Entity<Director>().Property(c => c.Id).UseHiLo();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Director> Directors { get; set; }
     }
