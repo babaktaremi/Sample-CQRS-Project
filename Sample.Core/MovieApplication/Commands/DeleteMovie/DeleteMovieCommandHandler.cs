@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.Common.BaseChannel;
@@ -23,7 +20,7 @@ namespace Sample.Core.MovieApplication.Commands.DeleteMovie
 
         public async Task<bool> Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
         {
-            var movie = await _writeMovieRepository.GetMovieById(request.MovieId,cancellationToken);
+            var movie = await _writeMovieRepository.GetMovieByIdAsync(request.MovieId, cancellationToken);
 
             if (movie is null)
                 return false;

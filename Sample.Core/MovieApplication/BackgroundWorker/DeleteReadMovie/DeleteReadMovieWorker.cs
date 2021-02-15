@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sample.Core.Common.BaseChannel;
@@ -12,28 +11,34 @@ using Sample.DAL.ReadRepositories;
 
 namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
 {
-   public class DeleteReadMovieWorker:BackgroundService
+    public class DeleteReadMovieWorker : BackgroundService
     {
         private readonly ReadMovieRepository _readMovieRepository;
         private readonly ChannelQueue<DeleteModelChannel> _deleteModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public DeleteReadMovieWorker(ReadMovieRepository readMovieRepository, ChannelQueue<DeleteModelChannel> deleteModelChannel, ILogger<AddReadModelWorker> logger)
         {
-            _readMovieRepository = readMovieRepository;
             _deleteModelChannel = deleteModelChannel;
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
-        protected override  async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    await foreach (var item in _deleteModelChannel.ReturnValue(stoppingToken))
+                    using var scope =  _serviceProvider.CreateScope();
+
+                    var readMovieRepository = scope.ServiceProvider.GetRequiredService<ReadMovieRepository>();
+
+
+                    await foreach (var item in _deleteModelChannel.ReadAsync(stoppingToken))
                     {
-                        await _readMovieRepository.DeleteMovieById(item.MovieId,stoppingToken);
+                        await readMovieRepository.DeleteByMovieIdAsync(item, stoppingToken);
                     }
                 }
                 catch (Exception e)

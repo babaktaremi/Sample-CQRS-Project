@@ -21,12 +21,10 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 
         public AddReadModelWorker(ReadMovieRepository readMovieRepository, ChannelQueue<ReadModelChannel> readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
-            _readMovieRepository = readMovieRepository;
             _readModelChannel = readModelChannel;
             _logger = logger;
             _serviceProvider = serviceProvider;
         }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -34,17 +32,16 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
                 using var scope = _serviceProvider.CreateScope();
 
                 var writeRepository = scope.ServiceProvider.GetRequiredService<WriteMovieRepository>();
-
+                var readMovieRepository = scope.ServiceProvider.GetRequiredService<ReadMovieRepository>();
                 try
                 {
-                    await foreach (var item in _readModelChannel.ReturnValue(stoppingToken))
+                    await foreach (var item in _readModelChannel.ReadAsync(stoppingToken))
                     {
-                        var movie = await writeRepository.GetMovieById(item.MovieId, stoppingToken);
+                        var movie = await writeRepository.GetMovieByIdAsync(item, stoppingToken);
 
                         if (movie != null)
                         {
-
-                            await _readMovieRepository.AddMovie(new Movie
+                            await readMovieRepository.AddAsync(new Movie
                             {
                                 MovieId = movie.Id,
                                 Director = movie.Director.FullName,
@@ -52,7 +49,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
                                 PublishYear = movie.PublishYear,
                                 BoxOffice = movie.BoxOffice,
                                 ImdbRate = movie.ImdbRate
-                            });
+                            }, stoppingToken);
                         }
                     }
                 }

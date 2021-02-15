@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Sample.DAL.Model.ReadModels;
@@ -11,29 +8,23 @@ namespace Sample.DAL.ReadRepositories
 {
     public class ReadMovieRepository : BaseReadRepository<Movie>
     {
-        public ReadMovieRepository(string connectionString,string database):base(connectionString, database)
+        public ReadMovieRepository(IMongoDatabase db) : base(db)
         {
-            
         }
 
-        public async Task AddMovie(Movie movie)
+        public Task<Movie> GetByMovieIdAsync(int movieId, CancellationToken cancellationToken = default)
         {
-            await base.Create(movie);
+            return FirstOrDefaultAsync(movie => movie.MovieId == movieId, cancellationToken);
         }
 
-        public Task<Movie> GetMovieByName(string name,CancellationToken cancellationToken)
+        public Task<Movie> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            return base.GetSingleWithFilter(movie =>movie.Name==name,cancellationToken );
+            return FirstOrDefaultAsync(movie => movie.Name == name, cancellationToken);
         }
 
-        public Task DeleteMovieById(int movieId,CancellationToken cancellationToken)
+        public Task DeleteByMovieIdAsync(int movieId, CancellationToken cancellationToken = default)
         {
-            return base.Delete(m => m.MovieId == movieId,cancellationToken);
-        }
-
-        public Task<Movie> GetMovieById(int movieId,CancellationToken cancellationToken)
-        {
-            return base.GetSingleWithFilter(movie => movie.MovieId == movieId,cancellationToken);
+            return DeleteAsync(m => m.MovieId == movieId, cancellationToken);
         }
     }
 }

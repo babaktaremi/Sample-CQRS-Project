@@ -9,7 +9,7 @@ using Sample.DAL;
 
 namespace Sample.Core.Common.Pipelines
 {
-    public class MovieCommitCommandPostProcessor:IRequestPostProcessor<AddMovieCommand, AddMovieCommandResult>
+    public class MovieCommitCommandPostProcessor : IRequestPostProcessor<AddMovieCommand, AddMovieCommandResult>
     {
         private readonly ApplicationDbContext _db;
         private readonly ChannelQueue<ReadModelChannel> _channel;
