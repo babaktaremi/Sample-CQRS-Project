@@ -14,12 +14,11 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 {
     public class AddReadModelWorker : BackgroundService
     {
-        private readonly ReadMovieRepository _readMovieRepository;
         private readonly ChannelQueue<ReadModelChannel> _readModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public AddReadModelWorker(ReadMovieRepository readMovieRepository, ChannelQueue<ReadModelChannel> readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
+        public AddReadModelWorker(ChannelQueue<ReadModelChannel> readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
             _readModelChannel = readModelChannel;
             _logger = logger;
@@ -35,9 +34,9 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
                 var readMovieRepository = scope.ServiceProvider.GetRequiredService<ReadMovieRepository>();
                 try
                 {
-                    await foreach (var item in _readModelChannel.ReadAsync(stoppingToken))
+                    await foreach (var item in _readModelChannel.ReturnValue(stoppingToken))
                     {
-                        var movie = await writeRepository.GetMovieByIdAsync(item, stoppingToken);
+                        var movie = await writeRepository.GetMovieByIdAsync(item.MovieId, stoppingToken);
 
                         if (movie != null)
                         {

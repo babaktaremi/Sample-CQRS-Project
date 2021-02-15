@@ -42,8 +42,7 @@ namespace Sample.Web
             services.AddScoped<WriteMovieRepository>();
             services.AddScoped<DirectorRepository>();
 
-            services.AddSingleton<ReadModelChannel>();
-            services.AddSingleton<DeleteModelChannel>();
+            services.AddSingleton(typeof(ChannelQueue<>));
 
 
             #region Mongo Singleton Injection

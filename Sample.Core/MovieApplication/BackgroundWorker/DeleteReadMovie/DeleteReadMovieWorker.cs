@@ -13,12 +13,12 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
 {
     public class DeleteReadMovieWorker : BackgroundService
     {
-        private readonly ReadMovieRepository _readMovieRepository;
+        
         private readonly ChannelQueue<DeleteModelChannel> _deleteModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public DeleteReadMovieWorker(ReadMovieRepository readMovieRepository, ChannelQueue<DeleteModelChannel> deleteModelChannel, ILogger<AddReadModelWorker> logger)
+        public DeleteReadMovieWorker(ChannelQueue<DeleteModelChannel> deleteModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
             _deleteModelChannel = deleteModelChannel;
             _logger = logger;
@@ -36,9 +36,9 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
                     var readMovieRepository = scope.ServiceProvider.GetRequiredService<ReadMovieRepository>();
 
 
-                    await foreach (var item in _deleteModelChannel.ReadAsync(stoppingToken))
+                    await foreach (var item in _deleteModelChannel.ReturnValue(stoppingToken))
                     {
-                        await readMovieRepository.DeleteByMovieIdAsync(item, stoppingToken);
+                        await readMovieRepository.DeleteByMovieIdAsync(item.MovieId, stoppingToken);
                     }
                 }
                 catch (Exception e)
