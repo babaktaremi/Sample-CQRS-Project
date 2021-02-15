@@ -4,7 +4,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Sample.Core.MovieApplication.Notifications.DeleteReadMovieNotification;
+using Sample.Core.Common.BaseChannel;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.DAL.WriteRepositories;
 
 namespace Sample.Core.MovieApplication.Commands.DeleteMovie
@@ -12,12 +13,12 @@ namespace Sample.Core.MovieApplication.Commands.DeleteMovie
    public class DeleteMovieCommandHandler:IRequestHandler<DeleteMovieCommand,bool>
    {
        private readonly WriteMovieRepository _writeMovieRepository;
-       private readonly IMediator _mediator;
+       private readonly ChannelQueue<DeleteModelChannel> _channelQueue;
 
-       public DeleteMovieCommandHandler(WriteMovieRepository writeMovieRepository, IMediator mediator)
+       public DeleteMovieCommandHandler(WriteMovieRepository writeMovieRepository, ChannelQueue<DeleteModelChannel> channelQueue)
        {
            _writeMovieRepository = writeMovieRepository;
-           _mediator = mediator;
+           _channelQueue = channelQueue;
        }
 
         public async Task<bool> Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
@@ -29,7 +30,7 @@ namespace Sample.Core.MovieApplication.Commands.DeleteMovie
 
             _writeMovieRepository.DeleteMovie(movie);
 
-            await _mediator.Publish(new DeleteReadMovieNotification(movie.Id), cancellationToken);
+            await _channelQueue.AddToChannelAsync(new DeleteModelChannel{MovieId = movie.Id}, cancellationToken);
 
             return true;
         }

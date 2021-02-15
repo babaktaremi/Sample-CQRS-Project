@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Sample.Core.Common.BaseChannel;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
 using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.DAL.ReadRepositories;
@@ -14,10 +15,10 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
    public class DeleteReadMovieWorker:BackgroundService
     {
         private readonly ReadMovieRepository _readMovieRepository;
-        private readonly DeleteModelChannel _deleteModelChannel;
+        private readonly ChannelQueue<DeleteModelChannel> _deleteModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
 
-        public DeleteReadMovieWorker(ReadMovieRepository readMovieRepository, DeleteModelChannel deleteModelChannel, ILogger<AddReadModelWorker> logger)
+        public DeleteReadMovieWorker(ReadMovieRepository readMovieRepository, ChannelQueue<DeleteModelChannel> deleteModelChannel, ILogger<AddReadModelWorker> logger)
         {
             _readMovieRepository = readMovieRepository;
             _deleteModelChannel = deleteModelChannel;
@@ -32,7 +33,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
                 {
                     await foreach (var item in _deleteModelChannel.ReturnValue(stoppingToken))
                     {
-                        await _readMovieRepository.DeleteMovieById(item,stoppingToken);
+                        await _readMovieRepository.DeleteMovieById(item.MovieId,stoppingToken);
                     }
                 }
                 catch (Exception e)

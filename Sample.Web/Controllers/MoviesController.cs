@@ -32,7 +32,7 @@ namespace Sample.Web.Controllers
             var command = await _mediator.Send(model);
 
 
-            return Ok(command.MovieId);
+            return Ok(command);
         }
 
         [HttpGet("GetMovieByName")]

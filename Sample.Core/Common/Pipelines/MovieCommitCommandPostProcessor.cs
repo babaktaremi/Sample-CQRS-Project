@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using MediatR;
 using MediatR.Pipeline;
+using Sample.Core.Common.BaseChannel;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.Core.MovieApplication.Commands.AddMovie;
-using Sample.Core.MovieApplication.Notifications.AddReadMovieNotification;
 using Sample.DAL;
 
 namespace Sample.Core.Common.Pipelines
@@ -11,19 +12,19 @@ namespace Sample.Core.Common.Pipelines
     public class MovieCommitCommandPostProcessor:IRequestPostProcessor<AddMovieCommand, AddMovieCommandResult>
     {
         private readonly ApplicationDbContext _db;
-        private readonly IMediator _mediator;
+        private readonly ChannelQueue<ReadModelChannel> _channel;
 
-        public MovieCommitCommandPostProcessor(ApplicationDbContext db, IMediator mediator)
+        public MovieCommitCommandPostProcessor(ApplicationDbContext db, ChannelQueue<ReadModelChannel> channel)
         {
             _db = db;
-            _mediator = mediator;
+            _channel = channel;
         }
 
         public async Task Process(AddMovieCommand request, AddMovieCommandResult response, CancellationToken cancellationToken)
         {
             await _db.SaveChangesAsync(cancellationToken);
 
-            await _mediator.Publish(new AddReadModelNotification(response.MovieId), cancellationToken);
+            await _channel.AddToChannelAsync(new ReadModelChannel{MovieId = response.MovieId}, cancellationToken);
         }
     }
 }

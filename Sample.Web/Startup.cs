@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
+using Sample.Core.Common.BaseChannel;
 using Sample.Core.Common.Marks;
 using Sample.Core.Common.Pipelines;
 using Sample.Core.MovieApplication.BackgroundWorker;
@@ -55,8 +56,7 @@ namespace Sample.Web
 
             services.AddSingleton<ReadMovieRepository>(options => new ReadMovieRepository("mongodb://localhost:27017", "moviesdatabase"));
 
-            services.AddSingleton<ReadModelChannel>();
-            services.AddSingleton<DeleteModelChannel>();
+            services.AddSingleton(typeof(ChannelQueue<>));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
           

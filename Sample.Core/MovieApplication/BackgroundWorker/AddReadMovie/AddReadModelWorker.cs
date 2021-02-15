@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Sample.Core.Common.BaseChannel;
 using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.DAL.Model.ReadModels;
 using Sample.DAL.ReadRepositories;
@@ -14,11 +15,11 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
     public class AddReadModelWorker : BackgroundService
     {
         private readonly ReadMovieRepository _readMovieRepository;
-        private readonly ReadModelChannel _readModelChannel;
+        private readonly ChannelQueue<ReadModelChannel> _readModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public AddReadModelWorker(ReadMovieRepository readMovieRepository, ReadModelChannel readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
+        public AddReadModelWorker(ReadMovieRepository readMovieRepository, ChannelQueue<ReadModelChannel> readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
             _readMovieRepository = readMovieRepository;
             _readModelChannel = readModelChannel;
@@ -38,7 +39,7 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
                 {
                     await foreach (var item in _readModelChannel.ReturnValue(stoppingToken))
                     {
-                        var movie = await writeRepository.GetMovieById(item, stoppingToken);
+                        var movie = await writeRepository.GetMovieById(item.MovieId, stoppingToken);
 
                         if (movie != null)
                         {
