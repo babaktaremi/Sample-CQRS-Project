@@ -14,17 +14,17 @@ namespace Sample.DAL.ReadRepositories
 
         public Task<Movie> GetByMovieIdAsync(int movieId, CancellationToken cancellationToken = default)
         {
-            return FirstOrDefaultAsync(movie => movie.MovieId == movieId, cancellationToken);
+            return base.FirstOrDefaultAsync(movie => movie.MovieId == movieId, cancellationToken);
         }
 
         public Task<Movie> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            return FirstOrDefaultAsync(movie => movie.Name == name, cancellationToken);
+            return base.FirstOrDefaultAsync(movie => movie.Name == name, cancellationToken);
         }
 
         public Task DeleteByMovieIdAsync(int movieId, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(m => m.MovieId == movieId, cancellationToken);
+            return base.DeleteAsync(m => m.MovieId == movieId, cancellationToken);
         }
     }
 }

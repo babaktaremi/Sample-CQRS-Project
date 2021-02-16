@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Sample.Core.Common.BaseChannel;
-using Sample.Core.Common.Marks;
 using Sample.Core.Common.Pipelines;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
 using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
@@ -16,6 +15,7 @@ using Sample.DAL;
 using Sample.DAL.ReadRepositories;
 using Sample.DAL.WriteRepositories;
 using MongoDB.Driver;
+using Sample.Core.MovieApplication.Commands.AddMovie;
 
 namespace Sample.Web
 {
@@ -59,7 +59,7 @@ namespace Sample.Web
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             #endregion
 
-            services.AddMediatR(typeof(ICommitable).Assembly);
+            services.AddMediatR(typeof(AddMovieCommand).Assembly);
 
             services.AddHostedService<AddReadModelWorker>();
             services.AddHostedService<DeleteReadMovieWorker>();

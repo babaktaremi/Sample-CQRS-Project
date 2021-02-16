@@ -10,12 +10,10 @@ namespace Sample.Core.MovieApplication.Commands.DeleteMovie
    public class DeleteMovieCommandHandler:IRequestHandler<DeleteMovieCommand,bool>
    {
        private readonly WriteMovieRepository _writeMovieRepository;
-       private readonly ChannelQueue<DeleteModelChannel> _channelQueue;
 
-       public DeleteMovieCommandHandler(WriteMovieRepository writeMovieRepository, ChannelQueue<DeleteModelChannel> channelQueue)
+       public DeleteMovieCommandHandler(WriteMovieRepository writeMovieRepository)
        {
            _writeMovieRepository = writeMovieRepository;
-           _channelQueue = channelQueue;
        }
 
         public async Task<bool> Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
@@ -26,8 +24,6 @@ namespace Sample.Core.MovieApplication.Commands.DeleteMovie
                 return false;
 
             _writeMovieRepository.DeleteMovie(movie);
-
-            await _channelQueue.AddToChannelAsync(new DeleteModelChannel{MovieId = movie.Id}, cancellationToken);
 
             return true;
         }
