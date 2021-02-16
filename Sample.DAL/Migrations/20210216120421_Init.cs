@@ -7,10 +7,6 @@ namespace Sample.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateSequence(
-                name: "EntityFrameworkHiLoSequence",
-                incrementBy: 10);
-
             migrationBuilder.CreateTable(
                 name: "Directors",
                 columns: table => new
@@ -28,7 +24,8 @@ namespace Sample.DAL.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublishYear = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ImdbRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -59,9 +56,6 @@ namespace Sample.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Directors");
-
-            migrationBuilder.DropSequence(
-                name: "EntityFrameworkHiLoSequence");
         }
     }
 }

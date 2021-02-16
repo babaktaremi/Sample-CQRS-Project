@@ -1,6 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Sample.Core.Common.BaseChannel;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Events;
+using Sample.DAL;
 using Sample.DAL.Model.WriteModels;
 using Sample.DAL.WriteRepositories;
 
@@ -11,12 +14,17 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
         private readonly IMediator _mediator;
         private readonly WriteMovieRepository _movieRepository;
         private readonly DirectorRepository _directorRepository;
+        private readonly ApplicationDbContext _db;
+        private readonly ChannelQueue<MovieAdded> _channel;
 
-        public AddMovieCommandHandler(IMediator mediator, WriteMovieRepository movieRepository, DirectorRepository directorRepository)
+
+        public AddMovieCommandHandler(IMediator mediator, WriteMovieRepository movieRepository, DirectorRepository directorRepository, ApplicationDbContext db, ChannelQueue<MovieAdded> channel)
         {
             _mediator = mediator;
             _movieRepository = movieRepository;
             _directorRepository = directorRepository;
+            _db = db;
+            _channel = channel;
         }
 
         public async Task<AddMovieCommandResult> Handle(AddMovieCommand request, CancellationToken cancellationToken)
@@ -39,6 +47,10 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
             };
 
             await _movieRepository.AddMovieAsync(movie, cancellationToken);
+
+            await _db.SaveChangesAsync(cancellationToken);
+
+            await _channel.AddToChannelAsync(new MovieAdded { MovieId = movie.Id }, cancellationToken);
 
             return new AddMovieCommandResult { MovieId = movie.Id };
         }
