@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sample.Core.Common.BaseChannel;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
-using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Events;
 using Sample.DAL.ReadRepositories;
 
 namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
@@ -14,11 +14,11 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie
     public class DeleteReadMovieWorker : BackgroundService
     {
         
-        private readonly ChannelQueue<DeleteModelChannel> _deleteModelChannel;
+        private readonly ChannelQueue<MovieDeleted> _deleteModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public DeleteReadMovieWorker(ChannelQueue<DeleteModelChannel> deleteModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
+        public DeleteReadMovieWorker(ChannelQueue<MovieDeleted> deleteModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
             _deleteModelChannel = deleteModelChannel;
             _logger = logger;

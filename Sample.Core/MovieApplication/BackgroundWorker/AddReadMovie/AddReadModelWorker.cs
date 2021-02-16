@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sample.Core.Common.BaseChannel;
-using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Events;
 using Sample.DAL.Model.ReadModels;
 using Sample.DAL.ReadRepositories;
 using Sample.DAL.WriteRepositories;
@@ -14,11 +14,11 @@ namespace Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie
 {
     public class AddReadModelWorker : BackgroundService
     {
-        private readonly ChannelQueue<ReadModelChannel> _readModelChannel;
+        private readonly ChannelQueue<MovieAdded> _readModelChannel;
         private readonly ILogger<AddReadModelWorker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public AddReadModelWorker(ChannelQueue<ReadModelChannel> readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
+        public AddReadModelWorker(ChannelQueue<MovieAdded> readModelChannel, ILogger<AddReadModelWorker> logger, IServiceProvider serviceProvider)
         {
             _readModelChannel = readModelChannel;
             _logger = logger;

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using MediatR.Pipeline;
 using Sample.Core.Common.BaseChannel;
-using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
+using Sample.Core.MovieApplication.BackgroundWorker.Common.Events;
 using Sample.Core.MovieApplication.Commands.AddMovie;
 using Sample.DAL;
 
@@ -12,9 +12,9 @@ namespace Sample.Core.Common.Pipelines
     public class MovieCommitCommandPostProcessor : IRequestPostProcessor<AddMovieCommand, AddMovieCommandResult>
     {
         private readonly ApplicationDbContext _db;
-        private readonly ChannelQueue<ReadModelChannel> _channel;
+        private readonly ChannelQueue<MovieAdded> _channel;
 
-        public MovieCommitCommandPostProcessor(ApplicationDbContext db, ChannelQueue<ReadModelChannel> channel)
+        public MovieCommitCommandPostProcessor(ApplicationDbContext db, ChannelQueue<MovieAdded> channel)
         {
             _db = db;
             _channel = channel;
@@ -24,7 +24,7 @@ namespace Sample.Core.Common.Pipelines
         {
             await _db.SaveChangesAsync(cancellationToken);
 
-            await _channel.AddToChannelAsync(new ReadModelChannel{MovieId = response.MovieId}, cancellationToken);
+            await _channel.AddToChannelAsync(new MovieAdded{MovieId = response.MovieId}, cancellationToken);
         }
     }
 }

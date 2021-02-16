@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MediatR;
 using Sample.Core.Common.BaseChannel;
-using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.DAL.WriteRepositories;
 
 namespace Sample.Core.MovieApplication.Commands.DeleteMovie

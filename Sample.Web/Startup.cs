@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Sample.Core.Common.BaseChannel;
 using Sample.Core.Common.Pipelines;
 using Sample.Core.MovieApplication.BackgroundWorker.AddReadMovie;
-using Sample.Core.MovieApplication.BackgroundWorker.Common.Channels;
 using Sample.Core.MovieApplication.BackgroundWorker.DeleteReadMovie;
 using Sample.DAL;
 using Sample.DAL.ReadRepositories;
