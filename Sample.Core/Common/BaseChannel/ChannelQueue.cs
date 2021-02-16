@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 
 namespace Sample.Core.Common.BaseChannel
 {
-    public class ChannelQueue<TQueue> where TQueue : class
+    public class ChannelQueue<TMessage> where TMessage : class
     {
-        private Channel<TQueue> _serviceChannel;
+        private Channel<TMessage> _serviceChannel;
 
         public ChannelQueue()
         {
-            _serviceChannel = Channel.CreateBounded<TQueue>(new BoundedChannelOptions(4000)
+            _serviceChannel = Channel.CreateBounded<TMessage>(new BoundedChannelOptions(4000)
             {
                 SingleReader = false,
                 SingleWriter = false
             });
         }
 
-        public async Task AddToChannelAsync(TQueue model, CancellationToken cancellationToken)
+        public async Task AddToChannelAsync(TMessage model, CancellationToken cancellationToken)
         {
             await _serviceChannel.Writer.WriteAsync(model, cancellationToken);
         }
 
-        public IAsyncEnumerable<TQueue> ReturnValue(CancellationToken cancellationToken)
+        public IAsyncEnumerable<TMessage> ReturnValue(CancellationToken cancellationToken)
         {
             return _serviceChannel.Reader.ReadAllAsync(cancellationToken);
         }
