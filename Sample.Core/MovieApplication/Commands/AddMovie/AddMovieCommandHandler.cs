@@ -11,16 +11,14 @@ namespace Sample.Core.MovieApplication.Commands.AddMovie
 {
     public class AddMovieCommandHandler : IRequestHandler<AddMovieCommand, AddMovieCommandResult>
     {
-        private readonly IMediator _mediator;
         private readonly WriteMovieRepository _movieRepository;
         private readonly DirectorRepository _directorRepository;
         private readonly ApplicationDbContext _db;
         private readonly ChannelQueue<MovieAdded> _channel;
 
 
-        public AddMovieCommandHandler(IMediator mediator, WriteMovieRepository movieRepository, DirectorRepository directorRepository, ApplicationDbContext db, ChannelQueue<MovieAdded> channel)
+        public AddMovieCommandHandler(WriteMovieRepository movieRepository, DirectorRepository directorRepository, ApplicationDbContext db, ChannelQueue<MovieAdded> channel)
         {
-            _mediator = mediator;
             _movieRepository = movieRepository;
             _directorRepository = directorRepository;
             _db = db;

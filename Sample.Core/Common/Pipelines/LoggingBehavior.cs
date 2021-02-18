@@ -24,7 +24,7 @@ namespace Sample.Core.Common.Pipelines
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
-                return null;
+                return default;
             }
         }
     }
